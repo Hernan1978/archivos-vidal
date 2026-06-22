@@ -3,78 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - ARCHIVOS VIDAL</title>
+    <title>Admin - Lado D</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="/eye-favicon.svg?v=3" type="image/svg+xml">
-    <link rel="shortcut icon" href="/eye-favicon.svg?v=3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="/eye-favicon.svg?v=3" type="image/svg+xml">
-    <link rel="shortcut icon" href="/eye-favicon.svg?v=3"> 
+    <style>
+        /* LOGIN */
+        .gate-wrap {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: var(--negro);
+        }
+        .gate-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--gris-medio);
+            padding: 36px;
+            border: 1px solid var(--gris-borde);
+            border-top: 3px solid var(--rojo);
+        }
+        .gate-card h1 {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            color: var(--crema);
+            margin-bottom: 6px;
+        }
+        .gate-card p {
+            color: var(--texto-suave);
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+        .gate-input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid var(--gris-borde);
+            background: var(--negro);
+            color: var(--crema);
+            font-size: 1rem;
+            outline: none;
+            margin-bottom: 12px;
+            font-family: var(--font-body);
+            transition: border-color 0.2s;
+        }
+        .gate-input:focus { border-color: var(--rojo); }
+        .gate-btn {
+            width: 100%;
+            padding: 13px;
+            border: 0;
+            background: var(--rojo);
+            color: var(--crema);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+            font-family: var(--font-body);
+            letter-spacing: 0.5px;
+        }
+        .gate-btn:hover { background: var(--rojo-claro); }
+        .gate-error {
+            color: var(--rojo-claro);
+            margin-top: 10px;
+            font-size: 0.88rem;
+            display: none;
+        }
+
+        /* PANEL */
+        .admin-panel { display: none; }
+
+        .admin-topbar {
+            background: var(--gris-oscuro);
+            border-bottom: 1px solid rgba(139,26,26,0.3);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .admin-topbar-logo {
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            color: var(--crema);
+        }
+        .admin-topbar-logo span { color: var(--rojo-claro); }
+        .admin-topbar-logo small {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            color: var(--texto-suave);
+            margin-left: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .admin-topbar-links {
+            display: flex;
+            gap: 12px;
+        }
+        .admin-topbar-links a {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            border: 1px solid var(--gris-borde);
+            color: var(--crema-suave);
+            transition: all 0.2s;
+        }
+        .admin-topbar-links a:hover {
+            border-color: var(--rojo);
+            color: var(--crema);
+        }
+        .admin-topbar-links a.logout {
+            border-color: rgba(139,26,26,0.4);
+            color: var(--rojo-claro);
+        }
+        .admin-topbar-links a.logout:hover {
+            background: var(--rojo);
+            color: var(--crema);
+        }
+
+        .admin-container {
+            max-width: 760px;
+            margin: 48px auto;
+            padding: 0 24px 80px;
+        }
+
+        .admin-section-title {
+            font-size: 0.72rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--rojo-claro);
+            margin-bottom: 20px;
+        }
+
+        .admin-card {
+            background: var(--gris-medio);
+            border: 1px solid var(--gris-borde);
+            padding: 32px;
+            border-top: 2px solid var(--rojo);
+        }
+
+        .admin-card h2 {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            color: var(--crema);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .admin-card h2 i { color: var(--rojo-claro); font-size: 1.1rem; }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--texto-suave);
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--negro);
+            border: 1px solid var(--gris-borde);
+            color: var(--crema);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--rojo);
+        }
+        .form-group select option {
+            background: var(--gris-medio);
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: var(--rojo);
+            color: var(--crema);
+            border: none;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-primary:hover { background: var(--rojo-claro); }
+
+        .success-msg {
+            display: none;
+            background: rgba(139,26,26,0.15);
+            border: 1px solid var(--rojo);
+            color: var(--crema);
+            padding: 14px 16px;
+            margin-top: 16px;
+            font-size: 0.9rem;
+        }
+
+        /* Botón invisible en footer para acceder al admin */
+        .invisible-admin-btn {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .admin-container { padding: 0 16px 60px; }
+            .admin-card { padding: 22px; }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Botón invisible para acceder al admin desde cualquier página -->
+    <button class="invisible-admin-btn" onclick="window.location.href='admin.html'" title=""></button>
+
+    <!-- LOGIN -->
     <div class="gate-wrap" id="gateWrap">
         <div class="gate-card">
-            <h1>Acceso admin</h1>
-            <p>Ingresá la clave para entrar al panel.</p>
-            <input type="password" id="adminPass" class="gate-input" placeholder="Clave">
+            <h1>Panel de acceso</h1>
+            <p>Ingresá la clave para administrar Lado D.</p>
+            <input type="password" id="adminPass" class="gate-input" placeholder="Clave de acceso">
             <button class="gate-btn" id="enterBtn">Entrar</button>
             <div class="gate-error" id="gateError">Clave incorrecta.</div>
         </div>
     </div>
 
+    <!-- PANEL -->
     <div class="admin-panel" id="adminPanel">
-        <header class="main-header light-header">
-            <div class="header-content">
-                <div class="title-section">
-                    <h1 class="main-title" style="font-size: 3rem;">ADMIN</h1>
-                    <p class="subtitle">Panel administrativo</p>
-                    <a href="index.html" class="hero-btn primary" style="display:inline-flex;margin-top:18px;">
-                        <i class="fas fa-home"></i> Inicio
-                    </a>
-                </div>
+
+        <div class="admin-topbar">
+            <div class="admin-topbar-logo">
+                Lado <span>B</span>
+                <small>Admin</small>
             </div>
-        </header>
+            <div class="admin-topbar-links">
+                <a href="index.html"><i class="fas fa-home"></i> Ver sitio</a>
+                <a href="#" class="logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Salir</a>
+            </div>
+        </div>
 
         <div class="admin-container">
+            <p class="admin-section-title">Nuevo contenido</p>
+
             <div class="admin-card">
-                <h2><i class="fas fa-plus-circle"></i> Crear nuevo artículo</h2>
+                <h2><i class="fas fa-plus-circle"></i> Crear artículo</h2>
+
                 <form id="articleForm">
                     <div class="form-group">
                         <label for="title">Título</label>
-                        <input type="text" id="title" required>
+                        <input type="text" id="title" placeholder="El título del artículo..." required>
                     </div>
-                    <div class="form-group">
-                        <label for="category">Categoría</label>
-                        <select id="category" required>
-                            <option value="">Selecciona una categoría</option>
-                            <option value="historia">Historia</option>
-                            <option value="musica">Música</option>
-                            <option value="baile">Baile</option>
-                            <option value="bandas">Bandas</option>
-                        </select>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Categoría</label>
+                            <select id="category" required>
+                                <option value="">Seleccioná</option>
+                                <option value="historia">Historia</option>
+                                <option value="politica">Política</option>
+                                <option value="musica">Música</option>
+                                <option value="rock">Rock</option>
+                                <option value="cumbia">Cumbia</option>
+                                <option value="tango">Tango</option>
+                                <option value="futbol">Fútbol</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Fecha</label>
+                            <input type="date" id="date" required>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="preview">Descripción breve</label>
-                        <textarea id="preview" required></textarea>
+                        <textarea id="preview" placeholder="Un párrafo que anticipe el artículo..." required></textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="date">Fecha</label>
-                        <input type="date" id="date" required>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="image">URL de imagen</label>
+                            <input type="url" id="image" placeholder="https://..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="link">Link al artículo</label>
+                            <input type="url" id="link" placeholder="https://..." required>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="image">URL de imagen</label>
-                        <input type="url" id="image" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="link">Link al artículo completo</label>
-                        <input type="url" id="link" required>
-                    </div>
+
                     <button type="submit" class="btn-primary">
                         <i class="fas fa-paper-plane"></i> Publicar artículo
                     </button>
+
+                    <div class="success-msg" id="successMsg">
+                        <i class="fas fa-check"></i> Artículo publicado correctamente.
+                    </div>
                 </form>
             </div>
         </div>
@@ -93,6 +351,13 @@
             sessionStorage.setItem('adminAuth', '1');
         }
 
+        function closeAdmin() {
+            sessionStorage.removeItem('adminAuth');
+            gateWrap.style.display = 'grid';
+            adminPanel.style.display = 'none';
+            adminPass.value = '';
+        }
+
         if (sessionStorage.getItem('adminAuth') === '1') openAdmin();
 
         document.getElementById('enterBtn').addEventListener('click', () => {
@@ -107,9 +372,18 @@
             if (e.key === 'Enter') document.getElementById('enterBtn').click();
         });
 
+        document.getElementById('logoutBtn').addEventListener('click', e => {
+            e.preventDefault();
+            closeAdmin();
+        });
+
         document.getElementById('articleForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Listo, luego conectamos este formulario con Sheets.');
+            document.getElementById('successMsg').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('successMsg').style.display = 'none';
+                this.reset();
+            }, 3000);
         });
     </script>
 </body>
