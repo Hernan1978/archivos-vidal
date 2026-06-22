@@ -3,58 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscar - ARCHIVOS VIDAL</title>
+    <title>Buscar - Lado B</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/eye-favicon.svg?v=3" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:400,700&family=Lora:400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .search-section {
+            background: var(--gris-oscuro);
+            border-bottom: 1px solid rgba(139,26,26,0.3);
+            padding: 40px 20px;
+        }
+        .search-container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .search-container h2 {
+            font-family: var(--font-title);
+            color: var(--crema);
+            margin-bottom: 28px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        .search-container h2 i {
+            color: var(--rojo-claro);
+            margin-right: 10px;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gris-medio);
+            border: 1px solid var(--gris-borde);
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            transition: border-color 0.2s;
+        }
+        .search-box:focus-within {
+            border-color: var(--rojo);
+        }
+        .search-box i {
+            color: var(--texto-suave);
+        }
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--crema);
+        }
+        .search-box input::placeholder {
+            color: var(--texto-suave);
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .filter-btn {
+            padding: 8px 18px;
+            border: 1px solid var(--gris-borde);
+            background: transparent;
+            color: var(--crema-suave);
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover {
+            border-color: var(--rojo);
+            color: var(--crema);
+        }
+        .filter-btn.active {
+            background: var(--rojo);
+            border-color: var(--rojo);
+            color: var(--crema);
+        }
+        .articles-section {
+            margin-top: 10px;
+        }
+        #resultsCount {
+            font-size: 1rem;
+            color: var(--texto-suave);
+            margin-left: 12px;
+            font-family: var(--font-body);
+        }
+        /* Header search page */
+        .search-page-header {
+            background: var(--gris-oscuro);
+            padding: 20px;
+            border-bottom: 1px solid rgba(139,26,26,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+        .search-page-header-content {
+            max-width: 1180px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .search-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+        .search-logo img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--rojo);
+        }
+        .search-logo span {
+            font-family: var(--font-title);
+            font-size: 1.3rem;
+            color: var(--crema);
+        }
+        .search-logo span b {
+            color: var(--rojo-claro);
+        }
+        .search-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .search-nav a {
+            color: var(--crema-suave);
+            text-decoration: none;
+            font-size: 0.88rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .search-nav a:hover { opacity: 1; }
+        .search-nav .ig-btn {
+            padding: 7px 16px;
+            border: 1px solid var(--rojo);
+            color: var(--rojo-claro);
+            opacity: 1;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+        .search-nav .ig-btn:hover {
+            background: var(--rojo);
+            color: var(--crema);
+        }
+    </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="main-header">
-        <div class="header-content">
-            <div class="logo-section">
-                <div class="bohemio-image-container">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" alt="Vidal bohemio" class="bohemio-image">
-                    <div class="image-glow"></div>
-                </div>
-            </div>
-            
-            <div class="title-section">
-                <h1 class="main-title">ARCHIVOS VIDAL</h1>
-                <p class="subtitle">Buscar y filtrar contenido</p>
-                <a href="index.html" class="footer-link" style="color: var(--color-white); display: inline-flex;">
-                    <i class="fas fa-home"></i> Inicio
-                </a>
-            </div>
-            
-            <div class="social-links">
-                <a href="https://instagram.com" target="_blank" class="instagram-link">
+
+    <!-- Header compacto -->
+    <header class="search-page-header">
+        <div class="search-page-header-content">
+            <a href="index.html" class="search-logo">
+                <img src="carlos.jpg" alt="Carlos de Argentina">
+                <span>Lado <b>B</b></span>
+            </a>
+            <nav class="search-nav">
+                <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+                <a href="https://instagram.com/ladob.argentina" target="_blank" class="ig-btn">
                     <i class="fab fa-instagram"></i> Instagram
                 </a>
-            </div>
+            </nav>
         </div>
     </header>
 
-    <!-- Buscador Principal -->
+    <!-- Buscador -->
     <section class="search-section">
         <div class="search-container">
-            <h2 style="font-family: var(--font-title); color: var(--color-bg-dark); margin-bottom: 30px; text-align: center;">
-                <i class="fas fa-search" style="color: var(--color-accent);"></i>Buscar todo el contenido
+            <h2>
+                <i class="fas fa-search"></i>Buscar todo el contenido
             </h2>
-            
             <div class="search-box">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInputMain" placeholder="Buscar por título, tema, artista, banda...">
             </div>
-            
             <div class="filters">
                 <button class="filter-btn active" data-category="all">Todos</button>
                 <button class="filter-btn" data-category="historia">Historia</button>
                 <button class="filter-btn" data-category="musica">Música</button>
-                <button class="filter-btn" data-category="baile">Baile</button>
-                <button class="filter-btn" data-category="bandas">Bandas</button>
+                <button class="filter-btn" data-category="politica">Política</button>
+                <button class="filter-btn" data-category="futbol">Fútbol</button>
+                <button class="filter-btn" data-category="rock">Rock</button>
+                <button class="filter-btn" data-category="cumbia">Cumbia</button>
+                <button class="filter-btn" data-category="tango">Tango</button>
             </div>
         </div>
     </section>
@@ -62,21 +205,21 @@
     <!-- Resultados -->
     <main class="content">
         <section class="articles-section">
-            <h2 class="section-title">
-                <i class="fas fa-list"></i> Resultados
-                <span id="resultsCount" style="font-size: 1.2rem; color: var(--color-text-light); margin-left: 15px;"></span>
-            </h2>
-            
-            <div class="articles-grid" id="searchResultsGrid">
-                <!-- Resultados se cargan dinámicamente -->
+            <div class="feed-header">
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i> Resultados
+                    <span id="resultsCount"></span>
+                </h2>
             </div>
+            <div class="articles-grid" id="searchResultsGrid"></div>
         </section>
     </main>
 
     <!-- Footer -->
     <footer class="main-footer">
         <div class="footer-content">
-            <p class="footer-text">ARCHIVOS VIDAL &copy; 2026</p>
+            <p class="quote">"Si algo pasó en Argentina, yo tengo una opinión. Puede estar mal, pero es mía."</p>
+            <p class="footer-text">LADO D — Carlos Argentina &copy; 2026</p>
             <div class="footer-links">
                 <a href="index.html" class="footer-link">
                     <i class="fas fa-home"></i> Inicio
