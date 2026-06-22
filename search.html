@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar - ARCHIVOS VIDAL</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:400,700&family=Lora:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="bohemio-image-container">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop" alt="Vidal bohemio" class="bohemio-image">
+                    <div class="image-glow"></div>
+                </div>
+            </div>
+            
+            <div class="title-section">
+                <h1 class="main-title">ARCHIVOS VIDAL</h1>
+                <p class="subtitle">Buscar y filtrar contenido</p>
+                <a href="index.html" class="footer-link" style="color: var(--color-white); display: inline-flex;">
+                    <i class="fas fa-home"></i> Inicio
+                </a>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://instagram.com" target="_blank" class="instagram-link">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Buscador Principal -->
+    <section class="search-section">
+        <div class="search-container">
+            <h2 style="font-family: var(--font-title); color: var(--color-bg-dark); margin-bottom: 30px; text-align: center;">
+                <i class="fas fa-search" style="color: var(--color-accent);"></i>Buscar todo el contenido
+            </h2>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInputMain" placeholder="Buscar por título, tema, artista, banda...">
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-category="all">Todos</button>
+                <button class="filter-btn" data-category="historia">Historia</button>
+                <button class="filter-btn" data-category="musica">Música</button>
+                <button class="filter-btn" data-category="baile">Baile</button>
+                <button class="filter-btn" data-category="bandas">Bandas</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resultados -->
+    <main class="content">
+        <section class="articles-section">
+            <h2 class="section-title">
+                <i class="fas fa-list"></i> Resultados
+                <span id="resultsCount" style="font-size: 1.2rem; color: var(--color-text-light); margin-left: 15px;"></span>
+            </h2>
+            
+            <div class="articles-grid" id="searchResultsGrid">
+                <!-- Resultados se cargan dinámicamente -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p class="footer-text">ARCHIVOS VIDAL &copy; 2026</p>
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">
+                    <i class="fas fa-home"></i> Inicio
+                </a>
+                <a href="admin.html" class="footer-link">
+                    <i class="fas fa-cog"></i> Admin
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script src="search.js"></script>
+</body>
+</html>
