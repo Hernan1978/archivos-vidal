@@ -86,5 +86,25 @@
     </a>
 
     <script src="app.js"></script>
+    <div class="admin-dock" id="adminDock">
+    <button class="admin-trigger" type="button" aria-label="Abrir acceso admin">
+        <i class="fas fa-cog"></i>
+    </button>
+    <a href="admin.html" class="admin-link">Acceso al panel</a>
+</div>
+
+<script>
+    const dock = document.getElementById('adminDock');
+    const trigger = dock.querySelector('.admin-trigger');
+
+    trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        dock.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dock.contains(e.target)) dock.classList.remove('open');
+    });
+</script>
 </body>
 </html>
