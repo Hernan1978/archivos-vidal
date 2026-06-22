@@ -25,9 +25,9 @@
             <div class="title-section">
                 <p class="eyebrow">LADO D</p>
                 <h1 class="main-title">Argentina sin filtros</h1>
-                <p class="subtitle">Política, fútbol, música, historia, tango, rock y todo lo que se te ocurra</p>
+                <p class="subtitle">Política, deportes, música, historia; de todo un poco.</p>
                 <p class="description">
-                    No soy periodista, no soy historiador, no soy músico. Soy argentino, y eso es lo mejor.
+                    No soy periodista, no soy historiador, no soy músico. Soy argentino, que es lo mejor que me pudo pasar.
                     Tengo opiniones sobre todo. Nadie me las pidió. Las doy igual.
                 </p>
 
@@ -52,7 +52,7 @@
                 <h2>Un archivo para leer, discutir y compartir.</h2>
             </div>
             <p class="strip-text">
-                Política, fútbol, rock, cumbia, tango e historia argentina, etc. Todo desde una mirada propia, sin pelos en la lengua.
+                Todo desde una mirada propia, nsin recibir ordenes de ningun bando, sin pelos en la lengua.
             </p>
         </section>
 
@@ -71,7 +71,7 @@
     <footer class="main-footer">
         <div class="footer-content">
             <p class="quote">"Si algo pasó en Argentina, yo tengo una opinión. Puede estar mal, pero es mía."</p>
-            <p class="footer-text">LADO B — Carlos de Argentina &copy; 2026</p>
+            <p class="footer-text">LADO D — Carlos Argentina &copy; 2026</p>
             <div class="footer-links">
                 <a href="search.html" class="footer-link">
                     <i class="fas fa-search"></i> Buscar
@@ -80,30 +80,10 @@
         </div>
     </footer>
 
-    <a href="admin.html" class="admin-float" aria-label="Administración">
-        <i class="fas fa-cog"></i>
-    </a>
-
     <script src="app.js"></script>
-    <div class="admin-dock" id="adminDock">
-        <button class="admin-trigger" type="button" aria-label="Abrir acceso admin">
-            <i class="fas fa-cog"></i>
-        </button>
-        <a href="admin.html" class="admin-link">Acceso al panel</a>
-    </div>
 
-    <script>
-        const dock = document.getElementById('adminDock');
-        const trigger = dock.querySelector('.admin-trigger');
+    <!-- Botón invisible admin -->
+    <a href="admin.html" style="position:fixed;bottom:0;right:0;width:40px;height:40px;display:block;opacity:0;z-index:9999;"></a>
 
-        trigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            dock.classList.toggle('open');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!dock.contains(e.target)) dock.classList.remove('open');
-        });
-    </script>
 </body>
 </html>
