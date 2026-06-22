@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARCHIVOS VIDAL - Charlemos sobre Argentina sin filtros</title>
+    <title>Lado B — Argentina sin filtros</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="/eye-favicon.svg?v=3" type="image/svg+xml">
     <link rel="shortcut icon" href="/eye-favicon.svg?v=3">
@@ -17,26 +17,26 @@
         <div class="header-content">
             <div class="logo-section">
                 <div class="bohemio-image-container">
-                    <img src="lucid-origin_Hombre_argentino_de_tez_morena_con_barba_descuidada_y_cabello_largo_y_ondulado_v-0.jpg" alt="Vidal bohemio" class="bohemio-image">
+                    <img src="carlos.jpg" alt="Carlos de Argentina" class="bohemio-image">
                     <div class="image-glow"></div>
                 </div>
             </div>
 
             <div class="title-section">
-                <p class="eyebrow">ARCHIVOS VIDAL</p>
-                <h1 class="main-title">Cultura argentina sin filtros</h1>
-                <p class="subtitle">Un poco de historia, no viene mal...</p>
+                <p class="eyebrow">LADO B</p>
+                <h1 class="main-title">Argentina sin filtros</h1>
+                <p class="subtitle">Política, fútbol, música, historia, tango y rock.</p>
                 <p class="description">
-                    Historia, música, baile y bandas conviven acá sin etiquetas rígidas.
-                    Un archivo vivo, con mirada propia y un poco de calle.
+                    No soy periodista, no soy historiador, no soy músico. Soy argentino, que es peor.
+                    Tengo opiniones sobre todo. Nadie me las pidió. Las doy igual.
                 </p>
 
                 <div class="hero-actions">
                     <a href="search.html" class="hero-btn primary">
                         <i class="fas fa-search"></i>
-                        Buscar archivos
+                        Buscar artículos
                     </a>
-                    <a href="https://instagram.com" target="_blank" class="hero-btn social" id="instagramLink">
+                    <a href="https://instagram.com/ladob.argentina" target="_blank" class="hero-btn social" id="instagramLink">
                         <i class="fab fa-instagram"></i>
                         Instagram
                     </a>
@@ -49,11 +49,10 @@
         <section class="intro-strip">
             <div>
                 <p class="strip-label">Bienvenida</p>
-                <h2>Un archivo para leer, mirar y compartir.</h2>
+                <h2>Un archivo para leer, discutir y compartir.</h2>
             </div>
             <p class="strip-text">
-                Vas a encontrar textos, imágenes y opiniones sobre momentos clave,
-                artistas, movimientos.
+                Política, fútbol, rock, cumbia, tango e historia argentina. Todo desde una mirada propia, sin pelos en la lengua.
             </p>
         </section>
 
@@ -71,8 +70,8 @@
 
     <footer class="main-footer">
         <div class="footer-content">
-            <p class="quote">"La historia no es lo que nos dicen, es lo que investigamos"</p>
-            <p class="footer-text">ARCHIVOS VIDAL &copy; 2026</p>
+            <p class="quote">"Si algo pasó en Argentina, yo tengo una opinión. Puede estar mal, pero es mía."</p>
+            <p class="footer-text">LADO B — Carlos de Argentina &copy; 2026</p>
             <div class="footer-links">
                 <a href="search.html" class="footer-link">
                     <i class="fas fa-search"></i> Buscar
@@ -87,24 +86,24 @@
 
     <script src="app.js"></script>
     <div class="admin-dock" id="adminDock">
-    <button class="admin-trigger" type="button" aria-label="Abrir acceso admin">
-        <i class="fas fa-cog"></i>
-    </button>
-    <a href="admin.html" class="admin-link">Acceso al panel</a>
-</div>
+        <button class="admin-trigger" type="button" aria-label="Abrir acceso admin">
+            <i class="fas fa-cog"></i>
+        </button>
+        <a href="admin.html" class="admin-link">Acceso al panel</a>
+    </div>
 
-<script>
-    const dock = document.getElementById('adminDock');
-    const trigger = dock.querySelector('.admin-trigger');
+    <script>
+        const dock = document.getElementById('adminDock');
+        const trigger = dock.querySelector('.admin-trigger');
 
-    trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        dock.classList.toggle('open');
-    });
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            dock.classList.toggle('open');
+        });
 
-    document.addEventListener('click', (e) => {
-        if (!dock.contains(e.target)) dock.classList.remove('open');
-    });
-</script>
+        document.addEventListener('click', (e) => {
+            if (!dock.contains(e.target)) dock.classList.remove('open');
+        });
+    </script>
 </body>
 </html>
