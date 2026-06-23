@@ -25,7 +25,7 @@
             <div class="title-section">
                 <p class="eyebrow">LADO D</p>
                 <h1 class="main-title">Argentina sin filtros</h1>
-                <p class="subtitle">Política, deportes, música, historia; de todo un poco.</p>
+                <p class="subtitle">Política, deporte, música, historia, de todo un poco.</p>
                 <p class="description">
                     No soy periodista, no soy historiador, no soy músico. Soy argentino, que es lo mejor que me pudo pasar.
                     Tengo opiniones sobre todo. Nadie me las pidió. Las doy igual.
@@ -36,7 +36,7 @@
                         <i class="fas fa-search"></i>
                         Buscar artículos
                     </a>
-                    <a href="https://instagram.com/ladob.argentina" target="_blank" class="hero-btn social" id="instagramLink">
+                    <a href="https://instagram.com/ladod.argentina" target="_blank" class="hero-btn social">
                         <i class="fab fa-instagram"></i>
                         Instagram
                     </a>
@@ -48,11 +48,11 @@
     <main class="content">
         <section class="intro-strip">
             <div>
-                <p class="strip-label">Bienvenida</p>
+                <p class="strip-label">Bienvenida/o</p>
                 <h2>Un archivo para leer, discutir y compartir.</h2>
             </div>
             <p class="strip-text">
-                Todo desde una mirada propia, nsin recibir ordenes de ningun bando, sin pelos en la lengua.
+                Todo desde una mirada propia, sin pelos en la lengua... el único lugar donde mis ideas no necesitan la aprobación de un comité que no entiende nada.
             </p>
         </section>
 
@@ -63,24 +63,33 @@
                 </h2>
                 <a href="search.html" class="feed-link">Ver todo <i class="fas fa-arrow-right"></i></a>
             </div>
-
             <div class="articles-grid" id="articlesGrid"></div>
         </section>
     </main>
 
     <footer class="main-footer">
         <div class="footer-content">
-            <p class="quote">"Si algo pasó en Argentina, yo tengo una opinión. Puede estar mal, pero es mía."</p>
-            <p class="footer-text">LADO D — Carlos Argentina &copy; 2026</p>
+            <p class="quote">"Si algo pasó en Argentina, yo tengo una opinión. Puede estar mal, pero es mía... y al menos a mí no me financia ningún jefe."</p>
+            <p class="footer-text">LADO D — Carlos Argentina</p>
             <div class="footer-links">
                 <a href="search.html" class="footer-link">
                     <i class="fas fa-search"></i> Buscar
+                </a>
+            </div>
+            <div class="footer-bottom">
+                <span class="footer-year">© <span id="currentYear"></span> Lado D</span>
+                <a href="#" class="cafe-btn" style="display:none;">
+                    ☕ Invitame un café
                 </a>
             </div>
         </div>
     </footer>
 
     <script src="app.js"></script>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
 
     <!-- Botón invisible admin -->
     <a href="admin.html" style="position:fixed;bottom:0;right:0;width:40px;height:40px;display:block;opacity:0;z-index:9999;"></a>
