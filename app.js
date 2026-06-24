@@ -1,4 +1,4 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbyKvO_ZwtcL9TLkPGUc-F8WVRqB4JxZtNkVmBik-O3TI0qsyteIeuQDT1Gq_fUbvJwo/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwDCTMXvPb70yOTf39b2_hXda19PHSt0ClTr_RKiduS379wdpWQp96wB9iLdX7BWfi-/exec';
 
 async function cargarArticulos() {
   try {
