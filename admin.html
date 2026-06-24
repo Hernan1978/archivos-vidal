@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* LOGIN */
         .gate-wrap {
             min-height: 100vh;
             display: grid;
@@ -62,7 +61,6 @@
             font-size: 0.95rem;
             transition: background 0.2s;
             font-family: var(--font-body);
-            letter-spacing: 0.5px;
         }
         .gate-btn:hover { background: var(--rojo-claro); }
         .gate-error {
@@ -71,10 +69,7 @@
             font-size: 0.88rem;
             display: none;
         }
-
-        /* PANEL */
         .admin-panel { display: none; }
-
         .admin-topbar {
             background: var(--gris-oscuro);
             border-bottom: 1px solid rgba(139,26,26,0.3);
@@ -100,10 +95,7 @@
             letter-spacing: 2px;
             text-transform: uppercase;
         }
-        .admin-topbar-links {
-            display: flex;
-            gap: 12px;
-        }
+        .admin-topbar-links { display: flex; gap: 12px; }
         .admin-topbar-links a {
             padding: 8px 16px;
             font-size: 0.85rem;
@@ -112,25 +104,14 @@
             color: var(--crema-suave);
             transition: all 0.2s;
         }
-        .admin-topbar-links a:hover {
-            border-color: var(--rojo);
-            color: var(--crema);
-        }
-        .admin-topbar-links a.logout {
-            border-color: rgba(139,26,26,0.4);
-            color: var(--rojo-claro);
-        }
-        .admin-topbar-links a.logout:hover {
-            background: var(--rojo);
-            color: var(--crema);
-        }
-
+        .admin-topbar-links a:hover { border-color: var(--rojo); color: var(--crema); }
+        .admin-topbar-links a.logout { border-color: rgba(139,26,26,0.4); color: var(--rojo-claro); }
+        .admin-topbar-links a.logout:hover { background: var(--rojo); color: var(--crema); }
         .admin-container {
             max-width: 760px;
             margin: 48px auto;
             padding: 0 24px 80px;
         }
-
         .admin-section-title {
             font-size: 0.72rem;
             letter-spacing: 3px;
@@ -138,14 +119,12 @@
             color: var(--rojo-claro);
             margin-bottom: 20px;
         }
-
         .admin-card {
             background: var(--gris-medio);
             border: 1px solid var(--gris-borde);
             padding: 32px;
             border-top: 2px solid var(--rojo);
         }
-
         .admin-card h2 {
             font-family: var(--font-title);
             font-size: 1.5rem;
@@ -156,10 +135,7 @@
             gap: 10px;
         }
         .admin-card h2 i { color: var(--rojo-claro); font-size: 1.1rem; }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             font-size: 0.8rem;
@@ -183,20 +159,23 @@
         }
         .form-group input:focus,
         .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--rojo);
+        .form-group textarea:focus { border-color: var(--rojo); }
+        .form-group select option { background: var(--gris-medio); }
+        .form-group textarea { height: 100px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .form-group select option {
-            background: var(--gris-medio);
-        }
-        .form-group textarea {
-            height: 100px;
-            resize: vertical;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+        .form-check input { width: auto; }
+        .form-check label {
+            font-size: 0.88rem;
+            color: var(--crema-suave);
+            text-transform: none;
+            letter-spacing: 0;
+            margin: 0;
         }
         .btn-primary {
             width: 100%;
@@ -208,7 +187,6 @@
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
-            letter-spacing: 0.5px;
             transition: background 0.2s;
             margin-top: 8px;
             display: flex;
@@ -217,7 +195,7 @@
             gap: 10px;
         }
         .btn-primary:hover { background: var(--rojo-claro); }
-
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
         .success-msg {
             display: none;
             background: rgba(139,26,26,0.15);
@@ -227,20 +205,15 @@
             margin-top: 16px;
             font-size: 0.9rem;
         }
-
-        /* Botón invisible en footer para acceder al admin */
-        .invisible-admin-btn {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            z-index: 9999;
+        .error-msg {
+            display: none;
+            background: rgba(180,35,24,0.15);
+            border: 1px solid #b42318;
+            color: #f08080;
+            padding: 14px 16px;
+            margin-top: 16px;
+            font-size: 0.9rem;
         }
-
         @media (max-width: 600px) {
             .form-row { grid-template-columns: 1fr; }
             .admin-container { padding: 0 16px 60px; }
@@ -250,14 +223,11 @@
 </head>
 <body>
 
-    <!-- Botón invisible para acceder al admin desde cualquier página -->
-    <button class="invisible-admin-btn" onclick="window.location.href='admin.html'" title=""></button>
-
     <!-- LOGIN -->
     <div class="gate-wrap" id="gateWrap">
         <div class="gate-card">
             <h1>Panel de acceso</h1>
-            <p>Ingresá la clave para administrar Lado D.</p>
+            <p>Ingresá la clave para administrar Lado B.</p>
             <input type="password" id="adminPass" class="gate-input" placeholder="Clave de acceso">
             <button class="gate-btn" id="enterBtn">Entrar</button>
             <div class="gate-error" id="gateError">Clave incorrecta.</div>
@@ -318,20 +288,28 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="image">URL de imagen</label>
-                            <input type="url" id="image" placeholder="https://..." required>
+                            <input type="url" id="image" placeholder="https://...">
                         </div>
                         <div class="form-group">
                             <label for="link">Link al artículo</label>
-                            <input type="url" id="link" placeholder="https://..." required>
+                            <input type="url" id="link" placeholder="https://...">
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary">
+                    <div class="form-check">
+                        <input type="checkbox" id="destacado">
+                        <label for="destacado">Marcar como destacado en la home</label>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="submitBtn">
                         <i class="fas fa-paper-plane"></i> Publicar artículo
                     </button>
 
                     <div class="success-msg" id="successMsg">
-                        <i class="fas fa-check"></i> Artículo publicado correctamente.
+                        <i class="fas fa-check"></i> Artículo publicado correctamente en Google Sheets.
+                    </div>
+                    <div class="error-msg" id="errorMsg">
+                        <i class="fas fa-times"></i> Hubo un error al publicar. Intentá de nuevo.
                     </div>
                 </form>
             </div>
@@ -339,6 +317,7 @@
     </div>
 
     <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyKvO_ZwtcL9TLkPGUc-F8WVRqB4JxZtNkVmBik-O3TI0qsyteIeuQDT1Gq_fUbvJwo/exec';
         const PASS = '1234';
         const gateWrap = document.getElementById('gateWrap');
         const adminPanel = document.getElementById('adminPanel');
@@ -377,13 +356,42 @@
             closeAdmin();
         });
 
-        document.getElementById('articleForm')?.addEventListener('submit', function(e) {
+        document.getElementById('articleForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            document.getElementById('successMsg').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('successMsg').style.display = 'none';
+            const btn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMsg');
+            const errorMsg = document.getElementById('errorMsg');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+
+            const payload = {
+                titulo: document.getElementById('title').value,
+                categoria: document.getElementById('category').value,
+                descripcion: document.getElementById('preview').value,
+                fecha: document.getElementById('date').value,
+                imagen: document.getElementById('image').value,
+                link: document.getElementById('link').value,
+                destacado: document.getElementById('destacado').checked ? 'si' : 'no'
+            };
+
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                successMsg.style.display = 'block';
                 this.reset();
-            }, 3000);
+            } catch (err) {
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publicar artículo';
+            }
         });
     </script>
 </body>
