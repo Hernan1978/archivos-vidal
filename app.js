@@ -1,45 +1,96 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbwDCTMXvPb70yOTf39b2_hXda19PHSt0ClTr_RKiduS379wdpWQp96wB9iLdX7BWfi-/exec';
+const SHEET_API = 'https://script.google.com/macros/s/AKfycbxURjli4JGK3EjrfLSHzf0nIbME529ojIXeLRoH1UV1onGKJ78mS1PvQVj_c62DgNY/exec';
 
-async function cargarArticulos() {
-  try {
-    const res = await fetch(API_URL);
-    const articulos = await res.json();
-    return articulos;
-  } catch (e) {
-    console.error('Error cargando artículos:', e);
-    return [];
-  }
+const state = {
+  items: [],
+  category: 'Todas'
+};
+
+const filtersEl = document.getElementById('filters');
+const gridEl = document.getElementById('notesGrid');
+const featuredMeta = document.getElementById('featuredMeta');
+const featuredTitle = document.getElementById('featuredTitle');
+const featuredExcerpt = document.getElementById('featuredExcerpt');
+const featuredLink = document.getElementById('featuredLink');
+
+function categories(items){
+  return ['Todas', ...new Set(items.map(i => i.category).filter(Boolean))];
 }
 
-function renderCard(art) {
-  return `
-    <div class="article-card">
-      ${art.imagen ? `<img src="${art.imagen}" alt="${art.titulo}" class="article-image" onerror="this.style.display='none'">` : ''}
-      <div class="article-content">
-        <span class="article-category">${art.categoria || ''}</span>
-        <h3 class="article-title">${art.titulo}</h3>
-        <p class="article-preview">${art.descripcion || ''}</p>
-        <div class="article-meta">
-          <span class="article-date">
-            <i class="fas fa-calendar"></i> ${art.fecha || ''}
-          </span>
-          ${art.link ? `<a href="${art.link}" target="_blank" class="article-link">Leer <i class="fas fa-arrow-right"></i></a>` : ''}
-        </div>
-      </div>
-    </div>
-  `;
+function normalizeItem(item){
+  return {
+    title: item.title || '',
+    category: item.category || '',
+    date: item.date || '',
+    excerpt: item.excerpt || '',
+    link: item.link || '#',
+    featured: String(item.featured).toLowerCase() === 'true',
+    image: item.image || '',
+    slug: item.slug || ''
+  };
 }
 
-// Cargar en la home
-const grid = document.getElementById('articlesGrid');
-if (grid) {
-  cargarArticulos().then(articulos => {
-    const destacados = articulos.filter(a => a.destacado === 'si' || a.destacado === true);
-    const mostrar = destacados.length > 0 ? destacados : articulos;
-    if (mostrar.length === 0) {
-      grid.innerHTML = '<p style="color:var(--texto-suave);padding:2rem;">Todavía no hay artículos publicados.</p>';
-    } else {
-      grid.innerHTML = mostrar.map(renderCard).join('');
-    }
+function renderFilters(){
+  filtersEl.innerHTML = categories(state.items).map(c => `
+    <button type="button" data-cat="${c}">${c}</button>
+  `).join('');
+
+  filtersEl.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.category = btn.dataset.cat;
+      render();
+    });
   });
 }
+
+function renderFeatured(items){
+  const featured = items.find(i => i.featured) || items[0];
+
+  if (!featured) {
+    featuredMeta.textContent = 'Sin datos';
+    featuredTitle.textContent = 'Todavía no hay notas';
+    featuredExcerpt.textContent = 'Cargá tus filas en Sheets y volvé a cargar.';
+    featuredLink.href = '#';
+    return;
+  }
+
+  featuredMeta.textContent = `${featured.category} · ${featured.date}`;
+  featuredTitle.textContent = featured.title;
+  featuredExcerpt.textContent = featured.excerpt;
+  featuredLink.href = featured.link || '#';
+}
+
+function renderGrid(items){
+  gridEl.innerHTML = items.map(item => `
+    <article class="note-card">
+      <div class="meta">${item.category} · ${item.date}</div>
+      <h3>${item.title}</h3>
+      <p>${item.excerpt}</p>
+      <a href="${item.link || '#'}">Leer más</a>
+    </article>
+  `).join('');
+}
+
+function render(){
+  const filtered = state.category === 'Todas'
+    ? state.items
+    : state.items.filter(i => i.category === state.category);
+
+  renderFeatured(filtered);
+  renderGrid(filtered);
+}
+
+async function loadData(){
+  try{
+    const res = await fetch(SHEET_API);
+    const data = await res.json();
+    const rawItems = Array.isArray(data.items) ? data.items : data;
+    state.items = (rawItems || []).map(normalizeItem);
+  }catch(err){
+    state.items = [];
+  }
+
+  renderFilters();
+  render();
+}
+
+loadData();
