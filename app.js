@@ -60,8 +60,8 @@ function renderFeatured(items){
 }
 
 function renderGrid(items){
-  gridEl.innerHTML = items.map(item => `
-    <article class="note-card">
+  gridEl.innerHTML = items.map((item, idx) => `
+    <article class="note-card reveal" style="animation-delay:${Math.min(idx * 0.04, 0.28)}s">
       <div class="meta">${item.category} · ${item.date}</div>
       <h3>${item.title}</h3>
       <p>${item.excerpt}</p>
