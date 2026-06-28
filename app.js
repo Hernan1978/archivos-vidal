@@ -39,7 +39,6 @@ function renderFilters(){
       state.category = btn.dataset.cat;
       render();
     });
-  });
 }
 
 function renderFeatured(items){
