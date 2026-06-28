@@ -22,11 +22,12 @@ function normalizeItem(item){
     category: item.categoria || '',
     date:     item.fecha     || '',
     excerpt:  item.resumen   || '',
-    link:     item.link      || '#',
+    link:     `nota.html?id=${item.id}`,
     featured: String(item.destacado).toLowerCase() === 'true',
     image:    item.imagen    || '',
     slug:     item.slug      || ''
   };
+}
 }
 
 function renderFilters(){
