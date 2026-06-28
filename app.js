@@ -38,6 +38,7 @@ function renderFilters(){
       state.category = btn.dataset.cat;
       render();
     });
+  });
 }
 
 function renderFeatured(items){
@@ -70,24 +71,3 @@ function render(){
   const filtered = state.category === 'Todas'
     ? state.items
     : state.items.filter(i => i.category === state.category);
-  renderFeatured(filtered);
-  renderGrid(filtered);
-}
-
-async function loadData(){
-  try {
-    const res = await fetch(SHEET_API);
-    const data = await res.json();
-    const rawItems = Array.isArray(data.items) ? data.items : data;
-    state.items = (rawItems || []).map(normalizeItem);
-  } catch(err) {
-    state.items = [];
-    featuredMeta.textContent = 'Error al cargar';
-    featuredTitle.textContent = 'No se pudo conectar con Sheets';
-    featuredExcerpt.textContent = 'Verificá que el Apps Script esté desplegado como público.';
-  }
-  renderFilters();
-  render();
-}
-
-loadData();
