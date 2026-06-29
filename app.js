@@ -75,6 +75,29 @@ function render(){
   renderGrid(filtered);
 }
 
+function buildBricks(){
+  const rows = 18;
+  const brickW = 80;
+  const brickH = 36;
+  const gap = 2;
+  const totalW = 700;
+  const bricksPerRow = Math.ceil(totalW / (brickW + gap)) + 1;
+  const colors = ['#3d2418','#3a2115','#3e2519','#3b2216','#3c2418'];
+  let svg = `<svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 700 ${rows*(brickH+gap)}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">`;
+  for(let r=0;r<rows;r++){
+    const offset = r%2===0 ? 0 : -(brickW+gap)/2;
+    for(let c=0;c<bricksPerRow;c++){
+      const x = offset + c*(brickW+gap);
+      const y = r*(brickH+gap);
+      const col = colors[(r+c)%colors.length];
+      svg += `<rect x="${x}" y="${y}" width="${brickW}" height="${brickH}" fill="${col}" rx="1" stroke="#1a120c" stroke-width="1"/>`;
+    }
+  }
+  svg += `<rect x="0" y="0" width="700" height="${rows*(brickH+gap)}" fill="rgba(0,0,0,0.45)"/>`;
+  svg += `</svg>`;
+  return svg;
+}
+
 async function renderMural(){
   const mural = document.getElementById('muralContainer');
   if (!mural) return;
@@ -92,19 +115,25 @@ async function renderMural(){
     const votados = {};
 
     mural.innerHTML = `
-      <div style="background:#1a1612;border-radius:24px;padding:2rem;position:relative;overflow:hidden;">
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;position:relative;z-index:2;" id="muralHitos"></div>
+      <div style="position:relative;border-radius:24px;overflow:hidden;padding:2rem;min-height:300px;">
+        ${buildBricks()}
+        <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,255,255,.012) 40px,rgba(255,255,255,.012) 41px);pointer-events:none;z-index:1;"></div>
+        <div style="position:absolute;font-family:sans-serif;font-size:90px;font-weight:900;color:rgba(255,90,60,0.07);top:5%;right:-10px;transform:rotate(-12deg);pointer-events:none;z-index:1;white-space:nowrap;">LADO D</div>
+        <div style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;" id="muralHitos"></div>
       </div>
       <div id="expOverlay" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;padding:1rem;"></div>
     `;
 
     document.getElementById('muralHitos').innerHTML = hitos.map((h, i) => `
-      <div onclick="abrirExp(${i})" style="cursor:pointer;padding:1rem;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);transition:filter .2s;${hitos.length % 2 !== 0 && i === hitos.length-1 ? 'grid-column:1/-1;max-width:340px;margin:0 auto;' : ''}" onmouseover="this.style.filter='brightness(1.15)'" onmouseout="this.style.filter='none'">
-        <div style="font-size:10px;letter-spacing:.1em;color:${h.color||'var(--accent)'};margin-bottom:.3rem;">${h.anio||''}</div>
-        <div style="font-size:18px;font-weight:700;color:${h.color||'var(--accent)'};margin-bottom:.4rem;line-height:1.2;">${h.titulo||''}</div>
-        <div style="font-size:12px;color:var(--muted);line-height:1.6;">${h.descripcion||h.descrpcion||''}</div>
-        <div style="font-size:11px;color:${h.color||'var(--accent)'};margin-top:.5rem;border-bottom:1.5px solid ${h.color||'var(--accent)'};display:inline-block;">${h.tag||''}</div>
-        <div style="font-size:10px;color:var(--muted);margin-top:.4rem;font-style:italic;">↳ tocá para el veredicto de Carlos</div>
+      <div onclick="abrirExp(${i})"
+        style="cursor:pointer;padding:1rem;border-radius:12px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);transition:filter .2s,transform .2s;${hitos.length % 2 !== 0 && i === hitos.length-1 ? 'grid-column:1/-1;max-width:340px;margin:0 auto;' : ''}"
+        onmouseover="this.style.filter='brightness(1.3)';this.style.transform='translateY(-2px)'"
+        onmouseout="this.style.filter='none';this.style.transform='none'">
+        <div style="font-size:10px;letter-spacing:.1em;color:${h.color||'#ff5a3c'};margin-bottom:.3rem;text-shadow:0 0 8px ${h.color||'#ff5a3c'};">${h.anio||''}</div>
+        <div style="font-size:18px;font-weight:700;color:${h.color||'#ff5a3c'};margin-bottom:.4rem;line-height:1.2;text-shadow:0 0 12px ${h.color||'#ff5a3c'}44;">${h.titulo||''}</div>
+        <div style="font-size:12px;color:#d4b896;line-height:1.6;">${h.descripcion||h.descrpcion||''}</div>
+        <div style="font-size:11px;color:${h.color||'#ff5a3c'};margin-top:.5rem;border-bottom:1.5px solid ${h.color||'#ff5a3c'};display:inline-block;">${h.tag||''}</div>
+        <div style="font-size:10px;color:#9a7a5a;margin-top:.4rem;font-style:italic;">↳ tocá para el veredicto de Carlos</div>
       </div>
     `).join('');
 
@@ -113,7 +142,7 @@ async function renderMural(){
       const votado = votados[idx];
       document.getElementById('expOverlay').innerHTML = `
         <div style="background:#1a1410;border:1.5px solid #3a2a1a;max-width:500px;width:100%;padding:2rem;position:relative;border-radius:4px;border-top:4px solid #e84a2a;">
-          <button onclick="document.getElementById('expOverlay').style.display='none'" style="position:absolute;top:.75rem;right:1rem;background:none;border:none;font-size:22px;cursor:pointer;color:#4a3a2a;">✕</button>
+          <button onclick="document.getElementById('expOverlay').style.display='none'" style="position:absolute;top:.75rem;right:1rem;background:none;border:none;font-size:22px;cursor:pointer;color:#6b5a3a;">✕</button>
           <div style="text-align:center;border-bottom:1px dashed #3a2a1a;padding-bottom:1rem;margin-bottom:1.2rem;">
             <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#6b5a3a;margin-bottom:.4rem;">Pasa y mira el mural</div>
             <div style="font-size:18px;font-weight:700;color:#e8d5a0;line-height:1.3;">${h.titulo||''}</div>
@@ -123,9 +152,9 @@ async function renderMural(){
           <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#6b5a3a;margin-bottom:.35rem;">Opinologo Carlos</div>
           <div style="border-left:3px solid #e84a2a;padding:.75rem 1rem;font-size:14px;line-height:1.6;color:#e8d5a0;margin-bottom:1.1rem;background:rgba(232,74,42,.06);">${h.sentencia||'Sin sentencia cargada.'}</div>
           <button onclick="marcarEstabas(${idx})" id="estabas-${idx}" style="display:flex;align-items:center;gap:8px;background:transparent;border:1px solid #3a2a1a;border-radius:2px;padding:6px 14px;font-size:12px;color:${votado?'#e84a2a':'#6b5a3a'};cursor:pointer;">
-            📍 ${votado ? 'Vos Estuviste ahí?' : 'Yo estaba ahí'}
+            📍 ${votado ? 'Estuviste ahí' : 'Yo estaba ahí'}
           </button>
-          <div style="text-align:right;font-size:10px;color:#4a3a2a;border-top:1px dashed #3a2a1a;padding-top:.75rem;margin-top:1rem;">Dr. Carlos de Argentina · Juez Titular</div>
+          <div style="text-align:right;font-size:10px;color:#4a3a2a;border-top:1px dashed #3a2a1a;padding-top:.75rem;margin-top:1rem;">Carlos de Argentina</div>
         </div>
       `;
       document.getElementById('expOverlay').style.display = 'flex';
