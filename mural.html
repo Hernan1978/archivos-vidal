@@ -59,19 +59,20 @@
 }
     }
 
-    .papelito{
-      position:absolute;
-      top:-30px;
-      width:14px;
-      height:18px;
-      background:rgba(240,232,208,.65);
-      border-radius:1px;
-      z-index:1;
-      pointer-events:none;
-      animation-name: papelitoFall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-    }
+.papelito{
+  position:absolute;
+  top:-30px;
+  width:14px;
+  height:18px;
+  background:rgba(255,245,220,.85);
+  border:1px solid rgba(0,0,0,.15);
+  border-radius:1px;
+  z-index:2;
+  pointer-events:none;
+  animation-name: papelitoFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
     @keyframes papelitoFall{
       0%{ transform: translateY(0) rotate(0deg); opacity:0; }
       8%{ opacity:.7; }
