@@ -76,7 +76,7 @@ function render(){
 }
 
 function buildBricks(){
-  const rows = 18;
+  const rows = 20;
   const brickW = 80;
   const brickH = 36;
   const gap = 2;
@@ -93,10 +93,13 @@ function buildBricks(){
       svg += `<rect x="${x}" y="${y}" width="${brickW}" height="${brickH}" fill="${col}" rx="1" stroke="#1a120c" stroke-width="1"/>`;
     }
   }
-  svg += `<rect x="0" y="0" width="700" height="${rows*(brickH+gap)}" fill="rgba(0,0,0,0.45)"/>`;
+  svg += `<rect x="0" y="0" width="700" height="${rows*(brickH+gap)}" fill="rgba(0,0,0,0.42)"/>`;
   svg += `</svg>`;
   return svg;
 }
+
+const rotaciones = [-2.5, 1.8, -1, 2.2, -1.5, 2, -1.2, 1.5];
+const papelColors = ['#ede4c8','#e8dfc4','#f2e9d2','#ebe2c6','#eee5ca'];
 
 async function renderMural(){
   const mural = document.getElementById('muralContainer');
@@ -115,46 +118,52 @@ async function renderMural(){
     const votados = {};
 
     mural.innerHTML = `
-      <div style="position:relative;border-radius:24px;overflow:hidden;padding:2rem;min-height:300px;">
+      <div style="position:relative;border-radius:24px;overflow:hidden;padding:2.5rem 2rem 2rem;">
         ${buildBricks()}
-        <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(255,255,255,.012) 40px,rgba(255,255,255,.012) 41px);pointer-events:none;z-index:1;"></div>
-        <div style="position:absolute;font-family:sans-serif;font-size:90px;font-weight:900;color:rgba(255,90,60,0.07);top:5%;right:-10px;transform:rotate(-12deg);pointer-events:none;z-index:1;white-space:nowrap;">LADO D</div>
-        <div style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;" id="muralHitos"></div>
+        <div style="position:absolute;font-family:sans-serif;font-size:90px;font-weight:900;color:rgba(255,90,60,0.06);top:5%;right:-10px;transform:rotate(-12deg);pointer-events:none;z-index:1;white-space:nowrap;">LADO D</div>
+        <div style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;" id="muralHitos"></div>
       </div>
       <div id="expOverlay" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;padding:1rem;"></div>
     `;
 
-    document.getElementById('muralHitos').innerHTML = hitos.map((h, i) => `
-      <div onclick="abrirExp(${i})"
-        style="cursor:pointer;padding:1rem;border-radius:12px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(4px);transition:filter .2s,transform .2s;${hitos.length % 2 !== 0 && i === hitos.length-1 ? 'grid-column:1/-1;max-width:340px;margin:0 auto;' : ''}"
-        onmouseover="this.style.filter='brightness(1.3)';this.style.transform='translateY(-2px)'"
-        onmouseout="this.style.filter='none';this.style.transform='none'">
-        <div style="font-size:10px;letter-spacing:.1em;color:${h.color||'#ff5a3c'};margin-bottom:.3rem;text-shadow:0 0 8px ${h.color||'#ff5a3c'};">${h.anio||''}</div>
-        <div style="font-size:18px;font-weight:700;color:${h.color||'#ff5a3c'};margin-bottom:.4rem;line-height:1.2;text-shadow:0 0 12px ${h.color||'#ff5a3c'}44;">${h.titulo||''}</div>
-        <div style="font-size:12px;color:#d4b896;line-height:1.6;">${h.descripcion||h.descrpcion||''}</div>
-        <div style="font-size:11px;color:${h.color||'#ff5a3c'};margin-top:.5rem;border-bottom:1.5px solid ${h.color||'#ff5a3c'};display:inline-block;">${h.tag||''}</div>
-        <div style="font-size:10px;color:#9a7a5a;margin-top:.4rem;font-style:italic;">↳ tocá para el veredicto de Carlos</div>
-      </div>
-    `).join('');
+    document.getElementById('muralHitos').innerHTML = hitos.map((h, i) => {
+      const rot = rotaciones[i % rotaciones.length];
+      const bg = papelColors[i % papelColors.length];
+      const isLast = hitos.length % 2 !== 0 && i === hitos.length - 1;
+      return `
+        <div onclick="abrirExp(${i})"
+          style="cursor:pointer;background:${bg};padding:1rem 1.1rem 1.2rem;position:relative;border-radius:2px;transform:rotate(${rot}deg);transition:filter .2s,transform .2s;box-shadow:2px 4px 12px rgba(0,0,0,.4);${isLast?'grid-column:1/-1;max-width:320px;margin:0 auto;':''}"
+          onmouseover="this.style.filter='brightness(1.08)';this.style.transform='rotate(${rot}deg) translateY(-3px)'"
+          onmouseout="this.style.filter='none';this.style.transform='rotate(${rot}deg)'">
+          <div style="content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(${-rot}deg);width:50px;height:14px;background:rgba(220,200,150,0.55);border:0.5px solid rgba(180,160,100,0.3);border-radius:1px;"></div>
+          <div style="font-family:monospace;font-size:10px;color:#8b2500;letter-spacing:.1em;margin-bottom:.3rem;">${h.anio||''}</div>
+          <div style="font-size:16px;font-weight:700;color:#1a1008;margin-bottom:.4rem;line-height:1.2;">${h.titulo||''}</div>
+          <div style="font-family:monospace;font-size:11.5px;color:#3d2e10;line-height:1.6;">${h.descripcion||h.descrpcion||''}</div>
+          <div style="font-family:monospace;font-size:11px;color:#8b2500;margin-top:.5rem;border-bottom:1.5px solid #8b2500;display:inline-block;">${h.tag||''}</div>
+          <div style="font-family:monospace;font-size:10px;color:#7a6535;margin-top:.4rem;font-style:italic;">↳ tocá para el veredicto de Carlos</div>
+        </div>
+      `;
+    }).join('');
 
     window.abrirExp = function(idx) {
       const h = hitos[idx];
       const votado = votados[idx];
       document.getElementById('expOverlay').innerHTML = `
-        <div style="background:#1a1410;border:1.5px solid #3a2a1a;max-width:500px;width:100%;padding:2rem;position:relative;border-radius:4px;border-top:4px solid #e84a2a;">
-          <button onclick="document.getElementById('expOverlay').style.display='none'" style="position:absolute;top:.75rem;right:1rem;background:none;border:none;font-size:22px;cursor:pointer;color:#6b5a3a;">✕</button>
-          <div style="text-align:center;border-bottom:1px dashed #3a2a1a;padding-bottom:1rem;margin-bottom:1.2rem;">
-            <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#6b5a3a;margin-bottom:.4rem;">Pasa y mira el mural</div>
-            <div style="font-size:18px;font-weight:700;color:#e8d5a0;line-height:1.3;">${h.titulo||''}</div>
+        <div style="background:#f0e8d0;max-width:500px;width:100%;padding:2rem;position:relative;transform:rotate(-0.5deg);border-radius:2px;border-top:5px solid #8b2500;box-shadow:0 20px 60px rgba(0,0,0,.6);">
+          <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:70px;height:16px;background:rgba(220,200,150,0.6);border:0.5px solid rgba(180,160,100,0.3);border-radius:1px;"></div>
+          <button onclick="document.getElementById('expOverlay').style.display='none'" style="position:absolute;top:.75rem;right:1rem;background:none;border:none;font-size:22px;cursor:pointer;color:#8b7a5a;font-family:monospace;">✕</button>
+          <div style="text-align:center;border-bottom:1px dashed #8b7a5a;padding-bottom:1rem;margin-bottom:1.2rem;">
+            <div style="font-family:monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#8b7a5a;margin-bottom:.4rem;">Pasa y mira el mural</div>
+            <div style="font-size:20px;font-weight:700;color:#1a1008;line-height:1.3;">${h.titulo||''}</div>
           </div>
-          <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#6b5a3a;margin-bottom:.35rem;">Hechos</div>
-          <div style="font-size:12px;line-height:1.7;color:#b8a880;margin-bottom:1.1rem;">${h.hechos||'Sin hechos cargados.'}</div>
-          <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#6b5a3a;margin-bottom:.35rem;">Opinologo Carlos</div>
-          <div style="border-left:3px solid #e84a2a;padding:.75rem 1rem;font-size:14px;line-height:1.6;color:#e8d5a0;margin-bottom:1.1rem;background:rgba(232,74,42,.06);">${h.sentencia||'Sin sentencia cargada.'}</div>
-          <button onclick="marcarEstabas(${idx})" id="estabas-${idx}" style="display:flex;align-items:center;gap:8px;background:transparent;border:1px solid #3a2a1a;border-radius:2px;padding:6px 14px;font-size:12px;color:${votado?'#e84a2a':'#6b5a3a'};cursor:pointer;">
+          <div style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#8b7a5a;margin-bottom:.35rem;">Hechos</div>
+          <div style="font-family:monospace;font-size:12px;line-height:1.7;color:#3d2e10;margin-bottom:1.1rem;">${h.hechos||'Sin hechos cargados.'}</div>
+          <div style="font-family:monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#8b7a5a;margin-bottom:.35rem;">Opinólogo Carlos</div>
+          <div style="border-left:3px solid #8b2500;padding:.75rem 1rem;font-size:14px;line-height:1.6;color:#1a1008;margin-bottom:1.1rem;background:#e8dfc4;font-weight:600;">${h.sentencia||'Sin sentencia cargada.'}</div>
+          <button onclick="marcarEstabas(${idx})" id="estabas-${idx}" style="display:flex;align-items:center;gap:8px;background:transparent;border:1.5px solid #8b7a5a;border-radius:2px;padding:6px 14px;font-family:monospace;font-size:12px;color:${votado?'#8b2500':'#5a4520'};cursor:pointer;">
             📍 ${votado ? 'Estuviste ahí' : 'Yo estaba ahí'}
           </button>
-          <div style="text-align:right;font-size:10px;color:#4a3a2a;border-top:1px dashed #3a2a1a;padding-top:.75rem;margin-top:1rem;">Carlos de Argentina</div>
+          <div style="text-align:right;font-family:monospace;font-size:10px;color:#8b7a5a;border-top:1px dashed #8b7a5a;padding-top:.75rem;margin-top:1rem;">Carlos de Argentina</div>
         </div>
       `;
       document.getElementById('expOverlay').style.display = 'flex';
@@ -164,7 +173,7 @@ async function renderMural(){
       if (!votados[idx]) {
         votados[idx] = true;
         const btn = document.getElementById(`estabas-${idx}`);
-        if (btn) { btn.style.color = '#e84a2a'; btn.innerHTML = '📍 Estuviste ahí'; }
+        if (btn) { btn.style.color = '#8b2500'; btn.innerHTML = '📍 Estuviste ahí'; }
       }
     };
 
