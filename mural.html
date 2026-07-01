@@ -45,51 +45,38 @@
       height:100%;
       object-fit:cover;
       z-index:0;
-      opacity:.5;
-      filter:saturate(.8);
-      transform:scale(1.1);
+      opacity:.4;
+      filter:saturate(.75) brightness(.85);
     }
     .mural-bg-dark{
       position:absolute;
       inset:0;
-      background:rgba(10,6,4,.4);
+      background:rgba(8,4,2,.5);
       z-index:1;
       pointer-events:none;
     }
-    .gota{
+    .papelito{
       position:absolute;
-      top:-40px;
-      width:4px;
-      border-radius:0 0 4px 4px;
+      top:-30px;
+      width:13px;
+      height:17px;
+      background:rgba(255,245,220,.82);
+      border:1px solid rgba(0,0,0,.12);
+      border-radius:1px;
       z-index:2;
       pointer-events:none;
-      animation-name:gotaFall;
-      animation-timing-function:ease-in;
-      animation-iteration-count:infinite;
+      animation-name: papelitoFall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
     }
-    @keyframes gotaFall{
-      0%{ height:0; opacity:0; }
-      10%{ opacity:.7; }
-      80%{ height:120px; opacity:.5; }
-      100%{ height:120px; top:100%; opacity:0; }
-    }
-    .carlos-video-box{
-      position:relative;
-      z-index:3;
-      border-radius:16px;
-      overflow:hidden;
-      margin-bottom:2rem;
-      box-shadow:0 12px 32px rgba(0,0,0,.5);
-      max-height:260px;
-    }
-    .carlos-video-box video{
-      width:100%;
-      height:260px;
-      object-fit:cover;
-      display:block;
+    @keyframes papelitoFall{
+      0%{ transform: translateY(0) rotate(0deg); opacity:0; }
+      8%{ opacity:.75; }
+      92%{ opacity:.5; }
+      100%{ transform: translateY(600px) rotate(400deg); opacity:0; }
     }
     .papel-mural{ transform: rotate(var(--rot)); transition: filter .2s; }
-    .papel-mural:hover{ filter: brightness(1.08); }
+    .papel-mural:hover{ filter: brightness(1.1); }
     .papel-sway-a{ animation: swayA 6s ease-in-out infinite; }
     .papel-sway-b{ animation: swayB 7s ease-in-out infinite; }
     @keyframes swayA{
@@ -107,24 +94,23 @@
   <div class="mural-wrap">
     <a class="mural-volver" href="/">← Volver a Lado D</a>
     <h1 class="mural-titulo">El Mural de Carlos</h1>
-    <p class="mural-sub">Momentos para recordar, sin orden y sin piedad</p>
+    <p class="mural-sub">Hechos, hitos y veredictos sin orden ni piedad</p>
     <div id="muralFullContainer"><p style="color:var(--muted);text-align:center;">Cargando mural...</p></div>
   </div>
   <script>
     const SHEET_API = 'https://script.google.com/macros/s/AKfycbwO7TVauAJNFXsK8mAQrePvbGEeZIMjvOX81HP2LGMmO9i1TzKmyswVdhpzK3USDwk/exec';
 
-    const videosCarlos = ['mural.mp4', 'carlos-caminando.mp4'];
-    let videoIdx = 0;
+    const videosLoop = ['mural.mp4', 'carlos-caminando.mp4'];
+    let videoLoopIdx = 0;
 
-    function buildGotas(n){
-      const colores = ['#8b0000','#1a1a8b','#1a6b1a','#8b6b00','#5a0a5a'];
+    function buildPapelitos(n){
       let html = '';
       for(let i=0;i<n;i++){
-        const left = (5 + Math.random()*90).toFixed(1);
-        const color = colores[i % colores.length];
-        const delay = (Math.random()*8).toFixed(1);
-        const dur = (4 + Math.random()*5).toFixed(1);
-        html += `<div class="gota" style="left:${left}%;background:${color};animation-delay:${delay}s;animation-duration:${dur}s;"></div>`;
+        const left = (Math.random()*100).toFixed(1);
+        const delay = (Math.random()*10).toFixed(1);
+        const dur = (5 + Math.random()*7).toFixed(1);
+        const rot = (Math.random()*50 - 25).toFixed(1);
+        html += `<div class="papelito" style="left:${left}%;animation-delay:${delay}s;animation-duration:${dur}s;transform:rotate(${rot}deg);"></div>`;
       }
       return html;
     }
@@ -141,7 +127,7 @@
       const sway = (i % 2 === 0) ? 'papel-sway-a' : 'papel-sway-b';
       return `
         <div onclick="abrirExp(${i})" class="papel-mural ${sway}"
-          style="--rot:${rot}deg;cursor:pointer;background:${bg};padding:1rem 1.1rem 1.2rem;position:relative;border-radius:2px;box-shadow:2px 4px 12px rgba(0,0,0,.4);${isLast?'grid-column:1/-1;max-width:340px;margin:0 auto;':''}">
+          style="--rot:${rot}deg;cursor:pointer;background:${bg};padding:1rem 1.1rem 1.2rem;position:relative;border-radius:2px;box-shadow:2px 4px 14px rgba(0,0,0,.5);${isLast?'grid-column:1/-1;max-width:340px;margin:0 auto;':''}">
           <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%) rotate(calc(-1 * var(--rot)));width:50px;height:14px;background:rgba(220,200,150,0.55);border:0.5px solid rgba(180,160,100,0.3);border-radius:1px;"></div>
           <div style="font-family:monospace;font-size:10px;color:#8b2500;letter-spacing:.1em;margin-bottom:.3rem;">${h.anio||''}</div>
           <div style="font-size:16px;font-weight:700;color:#1a1008;margin-bottom:.4rem;line-height:1.2;">${h.titulo||''}</div>
@@ -185,13 +171,13 @@
     };
 
     function setupVideoLoop(){
-      const vid = document.getElementById('carlosVideo');
+      const vid = document.getElementById('bgVideoLoop');
       if (!vid) return;
-      vid.src = videosCarlos[videoIdx];
+      vid.src = videosLoop[videoLoopIdx];
       vid.play();
       vid.onended = function(){
-        videoIdx = (videoIdx + 1) % videosCarlos.length;
-        vid.src = videosCarlos[videoIdx];
+        videoLoopIdx = (videoLoopIdx + 1) % videosLoop.length;
+        vid.src = videosLoop[videoLoopIdx];
         vid.play();
       };
     }
@@ -209,13 +195,10 @@
         }
 
         container.innerHTML = `
-          <div style="position:relative;border-radius:24px;overflow:hidden;padding:2.5rem 2rem 2rem;min-height:300px;background:#1a1612;">
-            <video class="mural-bg-video" src="carlos-.mp4" autoplay muted loop playsinline></video>
+          <div style="position:relative;border-radius:24px;overflow:hidden;padding:2.5rem 2rem 2rem;min-height:400px;background:#1a1612;">
+            <video id="bgVideoLoop" class="mural-bg-video" muted playsinline></video>
             <div class="mural-bg-dark"></div>
-            ${buildGotas(20)}
-            <div class="carlos-video-box">
-              <video id="carlosVideo" muted playsinline></video>
-            </div>
+            ${buildPapelitos(35)}
             <div style="position:relative;z-index:3;display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;" id="muralFullHitos"></div>
           </div>
           <div id="expOverlay" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;align-items:center;justify-content:center;padding:1rem;"></div>
