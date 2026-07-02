@@ -170,17 +170,28 @@
       }
     };
 
-    function setupVideoLoop(){
-      const vid = document.getElementById('bgVideoLoop');
-      if (!vid) return;
-      vid.src = videosLoop[videoLoopIdx];
-      vid.play();
-      vid.onended = function(){
-        videoLoopIdx = (videoLoopIdx + 1) % videosLoop.length;
-        vid.src = videosLoop[videoLoopIdx];
-        vid.play();
-      };
-    }
+   function setupVideoLoop(){
+  const vid = document.getElementById('bgVideoLoop');
+  if (!vid) return;
+
+  const preload = document.createElement('video');
+  preload.muted = true;
+  preload.preload = 'auto';
+
+  function playNext(){
+    videoLoopIdx = (videoLoopIdx + 1) % videosLoop.length;
+    preload.src = videosLoop[(videoLoopIdx + 1) % videosLoop.length];
+    preload.load();
+    vid.src = videosLoop[videoLoopIdx];
+    vid.play();
+  }
+
+  vid.src = videosLoop[videoLoopIdx];
+  preload.src = videosLoop[(videoLoopIdx + 1) % videosLoop.length];
+  preload.load();
+  vid.play();
+  vid.onended = playNext;
+}
 
     async function loadMural(){
       const container = document.getElementById('muralFullContainer');
